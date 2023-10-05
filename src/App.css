@@ -55,4 +55,7 @@ form button {
   form {
     display: none;
   }
+  div {
+    page-break-inside: avoid;
+  }
 }
