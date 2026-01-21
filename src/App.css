@@ -21,6 +21,12 @@
   height: 3.9cm;
   margin-right: 0.4cm;
 }
+.zero {
+  color: #ccc;
+  strong {
+    font-weight: normal;
+  }
+}
 h2 {
   white-space: nowrap;
   text-overflow: ellipsis;

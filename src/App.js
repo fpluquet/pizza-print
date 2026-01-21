@@ -13,6 +13,7 @@ function ParseComponent () {
     text = text.replace(/"/g, '')
     const lines = text.split('\n')
       const headers = lines[0].split('\t')
+      console.table(headers)
     const result = []
     for (let i = 1; i < lines.length; i++) {
       const obj = {}
@@ -23,24 +24,26 @@ function ParseComponent () {
       }
       result.push(obj)
     }
+    console.dir(result)
     return result
   }
 
   const nbPizzasPerType = (item, nbs) => {
     let nbPizzas = 0
-    if (parseInt(item['végé']) != 0) nbs['végé'] += parseInt(item['végé'])
+    if (parseInt(item['VG']) != 0) nbs['VG'] += parseInt(item['VG'])
     if (parseInt(item['4F']) != 0) nbs['4F'] += parseInt(item['4F'])
     if (parseInt(item['JF']) != 0) nbs['JF'] += parseInt(item['JF'])
-    if (parseInt(item['Racl']) != 0) nbs['Racl'] += parseInt(item['Racl'])
+    if (parseInt(item['Savoy']) != 0) nbs['Savoy'] += parseInt(item['Savoy'] || 0)
+      console.log(nbs)
     return nbs
   }
 
   const calculateNbPizzasPerType = (data) => {
     let nbs = {
-      'végé': 0,
+      'VG': 0,
       '4F': 0,
       'JF': 0,
-      'Racl': 0
+      'Savoy': 0
     }
     for (let item of data)
       nbs = nbPizzasPerType(item, nbs)
@@ -52,8 +55,8 @@ function ParseComponent () {
   const texts = {
     '4F':  { 'nom': '4 Fromages', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, fromage “tartiflette”, bleu d’Auvergne, mozzarella, fromage de chèvre, mix de fromages râpés, olive, origan." },
     'JF': { 'nom': 'Jambon-Fromage', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, jambon, mix de fromages râpés, parmesan, olive, mozzarella, origan." },
-    'Racl': { 'nom': 'Raclette', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, crème épaisse, oignons, lardons, pommes de terre, tranches de raclette, origan." },
-    'végé': { 'nom': 'Végé', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, oignons, poivrons, champignons, tomates cerises, mix de fromages râpés, parmesan, olives, origan, mix épices “spaghetti”." }
+    'Savoy': { 'nom': 'Savoyarde', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, crème épaisse, oignons, lardons, tranches de raclette et fromage “tartiflette”, origan." },
+    'VG': { 'nom': 'Végétarienne', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, oignons, poivrons, champignons, tomates cerises, mix de fromages râpés, parmesan, olives, origan, mix épices “spaghetti”." }
   }
   return (
     <>
@@ -72,10 +75,10 @@ function ParseComponent () {
             <div className={"twoPanes"}>
               <h3>{item['Montant total']}</h3>
               <div class={"pizzasPerPersonne"}>
-                {parseInt(item['végé']) != 0 && <p>{item['végé']} x Végé</p>}
-                {parseInt(item['4F']) != 0 && <p>{item['4F']} x 4 Fromages</p>}
-                {parseInt(item['JF']) != 0 && <p>{item['JF']} x Jambon-Fromage</p>}
-                {parseInt(item['Racl']) != 0 && <p>{item['Racl']} x Raclette</p>}
+                <p class={item['VG'] === "0" && "zero"}><strong>{item['VG']}</strong> VG</p>
+                <p class={item['4F'] === "0" && "zero"}><strong>{item['4F']}</strong> 4F</p>
+                <p class={item['JF'] === "0" && "zero"}><strong>{item['JF']}</strong> J-F</p>
+                <p class={item['Savoy'] === "0" && "zero"}><strong>{item['Savoy']}</strong> Savoy.</p>
               </div>
             </div>
           </div>
@@ -95,7 +98,7 @@ function ParseComponent () {
                     </div>
                     <div className={"right"}>
                       <h2>{texts[key].nom}</h2>
-                      <div className={"date"}>Fait le 9/02/2025</div>
+                      <div className={"date"}>Fait le 25/01/2026</div>
                     </div>
                   </div>
                   <p>{texts[key].ingredients}</p>
