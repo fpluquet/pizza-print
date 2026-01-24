@@ -62,10 +62,16 @@ function ParseComponent () {
     <>
     <form>
       <textarea placeholder={"Collez ici le contenu de l'Excel (avec les en-têtes)"} onChange={(v) => changeText(v)}></textarea>
+      <div class={"note"}>
+        Paramètres d'impression optimisés : <br/>
+        - Marges : 13mm en haut, 0,5mm à droite, 10mm en bas, 3mm à gauche<br/>
+        - Échelle : 98%<br/>
+      </div>
       <button onClick={(e) => {
         e.preventDefault();
         window.print()
       }}>Imprimer !</button>
+
     </form>
     <div className={"list"}>
       {text.map((item, index) => {
