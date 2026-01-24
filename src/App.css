@@ -30,6 +30,17 @@
   padding: 10px;
   border-radius: 5px;
 }
+.error {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #ef5350;
+  padding: 12px;
+  border-radius: 5px;
+  font-weight: 500;
+}
 .zero {
   color: #ccc;
   strong {

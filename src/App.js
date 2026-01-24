@@ -1,32 +1,74 @@
 import logoAP from './logoAP.png';
 import './App.css';
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 function ParseComponent () {
   const [textToParse, setTextToParse] = useState('')
+  const [error, setError] = useState(null)
+  const [text, setText] = useState([])
+  const [nbs, setNbs] = useState({
+    'VG': 0,
+    '4F': 0,
+    'JF': 0,
+    'Savoy': 0
+  })
+  
   const changeText = (v) => {
     setTextToParse(v.target.value)
   }
 
-  const parseText = (text) => {
+  const parseText = (inputText) => {
     // parse csv to json
-    text = text.replace(/"/g, '')
-    const lines = text.split('\n')
-      const headers = lines[0].split('\t')
-      console.table(headers)
-    const result = []
-    for (let i = 1; i < lines.length; i++) {
-      const obj = {}
-      if(lines[i].trim() === '') continue
-      const currentline = lines[i].split('\t')
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j]
+    try {
+      if (!inputText || inputText.trim() === '') {
+        setError(null)
+        setText([])
+        setNbs({
+          'VG': 0,
+          '4F': 0,
+          'JF': 0,
+          'Savoy': 0
+        })
+        return []
       }
-      result.push(obj)
+      let text = inputText.replace(/"/g, '')
+      const lines = text.split('\n')
+      const headers = lines[0].split('\t')
+      
+      if (!headers || headers.length === 0) {
+        throw new Error('Format invalide : aucune en-tête détectée')
+      }
+      
+      if (!headers.includes('NOM') || !headers.includes('PRENOM')) {
+        throw new Error('Format invalide : colonnes "NOM" et "PRENOM" requises')
+      }
+      
+      console.table(headers)
+      const result = []
+      for (let i = 1; i < lines.length; i++) {
+        const obj = {}
+        if(lines[i].trim() === '') continue
+        const currentline = lines[i].split('\t')
+        for (let j = 0; j < headers.length; j++) {
+          obj[headers[j]] = currentline[j]
+        }
+        result.push(obj)
+      }
+      console.dir(result)
+      setError(null)
+      setText(result)
+      return result
+    } catch (err) {
+      setError(err.message)
+      setText([])
+      return []
     }
-    console.dir(result)
-    return result
   }
+
+  useEffect(() => {
+    const parsedText = parseText(textToParse)
+    setNbs(calculateNbPizzasPerType(parsedText))
+  }, [textToParse])
 
   const nbPizzasPerType = (item, nbs) => {
     let nbPizzas = 0
@@ -39,19 +81,17 @@ function ParseComponent () {
   }
 
   const calculateNbPizzasPerType = (data) => {
-    let nbs = {
+    let nbsCount = {
       'VG': 0,
       '4F': 0,
       'JF': 0,
       'Savoy': 0
     }
     for (let item of data)
-      nbs = nbPizzasPerType(item, nbs)
-    return nbs
+      nbsCount = nbPizzasPerType(item, nbsCount)
+    return nbsCount
   }
 
-  const text = parseText(textToParse)
-  const nbs = calculateNbPizzasPerType(text)
   const texts = {
     '4F':  { 'nom': '4 Fromages', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, fromage “tartiflette”, bleu d’Auvergne, mozzarella, fromage de chèvre, mix de fromages râpés, olive, origan." },
     'JF': { 'nom': 'Jambon-Fromage', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, jambon, mix de fromages râpés, parmesan, olive, mozzarella, origan." },
@@ -62,6 +102,11 @@ function ParseComponent () {
     <>
     <form>
       <textarea placeholder={"Collez ici le contenu de l'Excel (avec les en-têtes)"} onChange={(v) => changeText(v)}></textarea>
+      {error && (
+        <div className={"error"}>
+          ⚠️ Erreur : {error}
+        </div>
+      )}
       <div class={"note"}>
         Paramètres d'impression optimisés : <br/>
         - Marges : 13mm en haut, 0,5mm à droite, 10mm en bas, 3mm à gauche<br/>
