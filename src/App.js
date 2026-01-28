@@ -98,6 +98,7 @@ function ParseComponent () {
     'Savoy': { 'nom': 'Savoyarde', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, crème épaisse, oignons, lardons, tranches de raclette et fromage “tartiflette”, origan." },
     'VG': { 'nom': 'Végétarienne', 'ingredients': "Ingrédients : pâte à pizza de la boulangerie Mespreuve, coulis de tomates, oignons, poivrons, champignons, tomates cerises, mix de fromages râpés, parmesan, olives, origan, mix épices “spaghetti”." }
   }
+  const cuisson = "Four préchauffé à 200°C, 10-12 minutes."
   return (
     <>
     <form>
@@ -152,7 +153,7 @@ function ParseComponent () {
                       <div className={"date"}>Fait le 25/01/2026</div>
                     </div>
                   </div>
-                  <p>{texts[key].ingredients}</p>
+                  <p>{texts[key].ingredients} {cuisson}</p>
                   <p><b>Tout est frais, peut être congelé. Bon appétit !</b></p>
                 </div>
               })}
