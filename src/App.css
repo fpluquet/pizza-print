@@ -2,29 +2,67 @@
   box-sizing: border-box;
 }
 .list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-left: 0.5cm;
+  margin: 0;
+}
+.label-page {
+  width: fit-content;
+}
+.label-grid {
+  display: grid;
+}
+.label-cell {
+  overflow: hidden;
+  padding: 1.5mm;
+  text-align: left;
+  font-size: 10px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.order-label,
+.pizza {
+  height: 100%;
+  overflow: hidden;
 }
 .pizzasPerPersonne {
   display: grid;
   grid-template-columns: 2fr 2fr;
   font-size: 14px;
+  align-content: start;
+  row-gap: 0;
 }
-.list > div:not(.newPage) {
-  /*border: 1px solid #ccc;*/
-  padding: 10px;
-  margin: 0;
-  text-align: left;
-  font-size: 10px;
-  width: 6.4cm;
-  height: 3.9cm;
-  margin-right: 0.4cm;
+.pizzasPerPersonne p {
+  margin: 2px 0;
+}
+.layout-settings {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  padding: 12px;
+}
+.layout-settings legend {
+  padding: 0 6px;
+  font-weight: 600;
+}
+.layout-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+.layout-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+.layout-fields input {
+  padding: 6px 8px;
+  font-size: 14px;
 }
 .note {
   font-size: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 12px;
+  margin-bottom: 0;
   color: #555;
   border: 1px dashed #aaa;
   padding: 10px;
@@ -65,7 +103,7 @@ form {
 }
 .twoPanes {
   display: flex;
-  height: calc(100% - 80px)
+  height: auto;
 }
 .twoPanes div {
   flex: 1;
@@ -74,7 +112,17 @@ form {
   font-size: 12px;
 }
 .twoPanes h3 {
-  margin-top: 12px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+.remarques {
+  margin: 4px 0 0;
+  font-size: 10px;
+  line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 form button {
   background-color: #4CAF50; /* Green */
@@ -87,56 +135,219 @@ form button {
   font-size: 16px;
   cursor: pointer;
 }
-.newPage {
-  flex-basis: 100%;
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+button.button-secondary {
+  background-color: #555;
+  padding: 10px 16px;
+  font-size: 14px;
+}
+.calibration-sheet {
+  display: none;
+}
+.calibration-page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: #fff;
+}
+.calibration-instructions {
+  position: absolute;
+  left: 20mm;
+  top: 140mm;
+  right: 20mm;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.calibration-instructions h1 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.calibration-instructions ol {
+  margin: 0;
+  padding-left: 18px;
+}
+.calibration-origin {
+  position: absolute;
+  width: 0;
   height: 0;
 }
+.calibration-cross-h,
+.calibration-cross-v {
+  position: absolute;
+  background: #000;
+}
+.calibration-cross-h {
+  width: 10mm;
+  height: 0.3mm;
+  left: -5mm;
+  top: -0.15mm;
+}
+.calibration-cross-v {
+  width: 0.3mm;
+  height: 10mm;
+  left: -0.15mm;
+  top: -5mm;
+}
+.calibration-segment {
+  position: absolute;
+  background: #000;
+}
+.calibration-segment-h {
+  height: 0.3mm;
+}
+.calibration-segment-v {
+  width: 0.3mm;
+}
+.calibration-tick {
+  position: absolute;
+  background: #000;
+}
+.calibration-segment-h .calibration-tick {
+  width: 0.3mm;
+  height: 4mm;
+  top: -2mm;
+}
+.calibration-segment-h .calibration-tick.start {
+  left: 0;
+}
+.calibration-segment-h .calibration-tick.end {
+  right: 0;
+}
+.calibration-segment-v .calibration-tick {
+  width: 4mm;
+  height: 0.3mm;
+  left: -2mm;
+}
+.calibration-segment-v .calibration-tick.start {
+  top: 0;
+}
+.calibration-segment-v .calibration-tick.end {
+  bottom: 0;
+}
+.calibration-label {
+  position: absolute;
+  font-size: 10px;
+  white-space: nowrap;
+  color: #000;
+}
+.calibration-origin .calibration-label {
+  left: 6mm;
+  top: -4mm;
+}
+.calibration-segment-h .calibration-label {
+  left: 50%;
+  top: 3mm;
+  transform: translateX(-50%);
+}
+.calibration-segment-v .calibration-label {
+  left: 4mm;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.section-title h1 {
+  margin: 16px 0 8px;
+  font-size: 20px;
+}
 .pizza {
-  padding: 5px !important;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
   p {
     text-align: justify;
-    margin: 4px 0;
-    font-size: 9px;
+    margin: 1px 0;
+    font-size: 10px;
+    line-height: 1.15;
+  }
+  p:last-child {
+    margin-top: 1px;
+    margin-bottom: 0;
+    font-size: 10px;
   }
   .title {
     font-size: 10px;
     font-weight: bold;
-    margin: 0 10px;
+    margin: 0 0 0.5mm;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 
     .logoAP {
-      height: 50px;
-      margin-right: 0px;
-      margin-left: -15px;
-      margin-right: 10px;
+      height: 9mm;
+      margin-left: -0.5mm;
+      margin-right: 1mm;
     }
 
     h2 {
       flex: 1;
-      font-size: 15px;
+      font-size: 11px;
       text-align: left;
       margin: 0;
+      line-height: 1.1;
+      white-space: normal;
     }
     .date {
-      font-size: 13px;
+      font-size: 9px;
       font-weight: lighter;
     }
   }
 }
-@page {
-  size: A4;
-  margin-top: 1.5cm;
-  margin-right: 0.5cm;
+@media screen {
+  .label-page {
+    margin-bottom: 12px;
+    border: 1px dashed #ccc;
+    background: #fff;
+  }
+  .label-cell {
+    outline: 1px dotted #ddd;
+  }
 }
 @media print {
-  form {
-    display: none;
+  html, body, #root, .App {
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  div {
+  .screen-only {
+    display: none !important;
+  }
+  .list {
+    margin: 0;
+  }
+  .label-page {
+    margin: 0;
+    border: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .label-cell {
+    outline: none;
     page-break-inside: avoid;
+    break-inside: avoid;
   }
-  .newPage {
-    page-break-before: always;
+
+  .print-mode-labels .calibration-sheet {
+    display: none !important;
+  }
+  .print-mode-labels .labels-output {
+    display: block;
+  }
+
+  .print-mode-calibration .labels-output {
+    display: none !important;
+  }
+  .print-mode-calibration .calibration-sheet {
+    display: block !important;
+  }
+  .print-mode-calibration .calibration-page {
+    width: 210mm;
+    height: 297mm;
   }
 }
